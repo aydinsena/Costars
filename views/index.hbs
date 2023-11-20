@@ -1,2 +1,7 @@
 <h1>{{appTitle}} 🚀</h1>
 <p>Welcome Ironhacker!</p>
+{{#each news.results}}
+<p>{{title}}</p>
+<a href="{{link}}">Check</a>
+<p>description :{{description}}</p>
+{{/each}}
