@@ -64,7 +64,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
       return User.create({ name, email, password: hashedPassword });
     })
     .then((user) => {
-      res.redirect("auth/login");
+      res.redirect("/auth/login");
     })
     .catch((error) => {
       if (error instanceof mongoose.Error.ValidationError) {
@@ -132,8 +132,9 @@ router.post("/login", isLoggedOut, (req, res, next) => {
           req.session.currentUser = user.toObject();
           // Remove the password field
           delete req.session.currentUser.password;
+          console.log(req.session);
 
-          res.redirect("/dashboard");
+          res.redirect("/user/dashboard");
         })
         .catch((err) => next(err)); // In this case, we send error handling to the error handling middleware.
     })
@@ -143,12 +144,13 @@ router.post("/login", isLoggedOut, (req, res, next) => {
 // GET /auth/logout
 router.get("/logout", isLoggedIn, (req, res) => {
   req.session.destroy((err) => {
+    res.clearCookie("connect.sid");
     if (err) {
-      res.status(500).render("auth/logout", { errorMessage: err.message });
+      res.status(500).render("/auth/logout", { errorMessage: err.message });
       return;
     }
 
-    res.redirect("/login");
+    res.redirect("/auth/login");
   });
 });
 
