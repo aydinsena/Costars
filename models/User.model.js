@@ -18,6 +18,13 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    walletentity: { type: Schema.Types.ObjectId, ref: "wallet" },
+
+    favCoins: [
+      {
+        type: String,
+      },
+    ],
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
