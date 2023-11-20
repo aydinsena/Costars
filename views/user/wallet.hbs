@@ -12,5 +12,12 @@
     <input type="text" name="amount" placeholder="amount">
 </label>
 <button type="submit">Add the value</button>
-
 </form>
+
+<ul>
+
+        {{#each walletInfo}}
+        <li> name: {{name}}, amount: {{amount}}</li> 
+        {{/each}}
+
+</ul>

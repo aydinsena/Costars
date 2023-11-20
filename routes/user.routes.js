@@ -11,10 +11,16 @@ router.get("/dashboard", isLoggedIn, (req, res, next) => {
 
 router.get("/wallet", isLoggedIn, (req, res, next) => {
   axios.get("https://api.coinlore.net/api/tickers/").then((response) => {
-    res.render("user/wallet", {
-      userInfo: req.session.currentUser,
-      data: response.data,
-    });
+    User.findById(req.session.currentUser._id)
+      .populate("walletentity")
+      .then((response1) => {
+        console.log("canim", response1.walletentity);
+        res.render("user/wallet", {
+          userInfo: req.session.currentUser,
+          data: response.data,
+          walletInfo: response1.walletentity.walletvalues,
+        });
+      });
   });
 });
 
@@ -25,8 +31,10 @@ router.post("/wallet", isLoggedIn, (req, res, next) => {
   User.findById(userId)
     .populate("walletentity")
     .then((user) => {
-      console.log(user, "is user?");
+      user.walletentity.walletvalues.push({ name, amount });
+      return user.walletentity.save();
     })
+
     .then((response) => {
       res.redirect("/user/wallet");
     })
