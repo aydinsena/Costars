@@ -133,7 +133,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
           // Remove the password field
           delete req.session.currentUser.password;
 
-          res.redirect("/dashboard");
+          res.redirect("/user/dashboard");
         })
         .catch((err) => next(err)); // In this case, we send error handling to the error handling middleware.
     })
@@ -150,10 +150,6 @@ router.get("/logout", isLoggedIn, (req, res) => {
 
     res.redirect("/auth/login");
   });
-});
-
-router.get("/dashboard", (req, res) => {
-  res.render("user/dashboard");
 });
 
 module.exports = router;
