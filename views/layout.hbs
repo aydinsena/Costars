@@ -10,14 +10,16 @@
   </head>
 
   <body>
-      <nav>
-        <a href="/auth/signup">Sign up</a>
-         <a href="/auth/login">Login</a>
-        <a href="/auth/logout">Logout</a>
-        <a href="/user/dashboard">Dashboard</a>
-    
-  
-    </nav>
+<nav>
+  {{#if isLoggedin}}
+    <a href="/auth/logout">Logout</a>
+    <a href="/user/dashboard">Dashboard</a>
+  {{else}}
+    <a href="/auth/signup">Sign up</a>
+    <a href="/auth/login">Login</a>
+  {{/if}}
+</nav>
+
     {{{body}}}
 
     <script src="/js/script.js"></script>
