@@ -23,7 +23,8 @@ router.get("/wallet", isLoggedIn, (req, res, next) => {
       });
   });
 });
-
+//! refactor this code
+//! change the format of the number values
 router.post("/wallet", isLoggedIn, (req, res, next) => {
   const { name, amount } = req.body;
   let totalValue = 0;
@@ -61,4 +62,22 @@ router.post("/wallet", isLoggedIn, (req, res, next) => {
     })
     .catch((err) => console.log(err));
 });
+
+router.get("/coins", isLoggedIn, (req, res, next) => {
+  axios.get("https://api.coinlore.net/api/tickers/").then((response) => {
+    //res.send(response.data.data);
+    res.render("user/coins", { coinData: response.data.data });
+  });
+});
+
+router.post("/coins", isLoggedIn, async (req, res, next) => {
+  try {
+    const { favCoin } = req.body;
+    console.log("seethefavedcoins", favCoin);
+    res.redirect("/user/coins");
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 module.exports = router;
