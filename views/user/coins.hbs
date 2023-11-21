@@ -1,4 +1,8 @@
 <h1>Coin page</h1>
+        {{#if message}}
+       <h3>{{message}}</h3>
+        {{/if}}
+
   <table>
     <thead>
       <tr>
@@ -16,20 +20,25 @@
       {{#each coinData}}
         <tr>
           <td >{{name}}</td>
+ 
           <td>{{percent_change_1h}}</td>
           <td>{{percent_change_24h}}</td>
           <td>{{percent_change_7d}}</td>
           <td>{{price_usd}}</td>
           <td>{{market_cap_usd}}</td>
           <td>{{volume24}}</td>
+       
+   
           <td>
             <form action="/user/coins" method="POST"> 
-            <input name="favCoin" value="{{name}}">
-            <button type="submit">Add Selected to Favorites</button>
+            <input type="hidden" name="favCoin" value="{{name}}">
+            <button type="submit">Add to Favorites</button>
             </form>
           </td>
+
         </tr>
       {{/each}}
+
     </tbody>
   </table>
   
