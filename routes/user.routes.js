@@ -154,8 +154,11 @@ router.post("/coins", isLoggedIn, async (req, res, next) => {
     });
   } catch (err) {
     res.render("user/coins", {
-      message: " An error occurred while processing your request",
+      message: "An error occurred while processing your request",
     });
+  }
+});
+
 router.get("/edit", isLoggedIn, (req, res) => {
   res.render("user/edit", { userInfo: req.session.currentUser });
 });
