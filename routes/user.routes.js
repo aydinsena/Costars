@@ -3,6 +3,7 @@ const isLoggedIn = require("../middleware/isLoggedIn");
 const router = express.Router();
 const axios = require("axios");
 const Wallet = require("../models/Wallet.model");
+const bcrypt = require("bcrypt");
 const User = require("../models/User.model");
 
 router.get("/dashboard", isLoggedIn, async (req, res, next) => {
@@ -84,6 +85,7 @@ router.get("/wallet", isLoggedIn, (req, res, next) => {
       });
   });
 });
+
 //! refactor this code
 //! change the format of the number values
 router.post("/wallet", isLoggedIn, (req, res, next) => {
@@ -126,7 +128,6 @@ router.post("/wallet", isLoggedIn, (req, res, next) => {
 
 router.get("/coins", isLoggedIn, (req, res, next) => {
   axios.get("https://api.coinlore.net/api/tickers/").then((response) => {
-    //res.send(response.data.data);
     res.render("user/coins", { coinData: response.data.data });
   });
 });
@@ -153,7 +154,7 @@ router.post("/coins", isLoggedIn, async (req, res, next) => {
     });
   } catch (err) {
     res.render("user/coins", {
-      message: " An error occurred while processing your request",
+      message: "An error occurred while processing your request",
     });
   }
 });
@@ -165,13 +166,90 @@ router.get("/news", isLoggedIn, (req, res, next) => {
     )
     .then((response) => {
       //console.log(response.data);
-      res.send(response.data);
       res.render("user/news", { news: response.data });
     })
     .catch((err) => {
       console.log(err);
       res.render("user/news", { news: [] });
     });
+});
+router.get("/edit", isLoggedIn, (req, res) => {
+  res.render("user/edit", { userInfo: req.session.currentUser });
+});
+
+router.post("/edit", isLoggedIn, async (req, res) => {
+  const { name, email, currentPassword, newPassword, confirmNewPassword } =
+    req.body;
+
+  try {
+    const user = await User.findById(req.session.currentUser._id);
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    user.name = name;
+    user.email = email;
+
+    if (newPassword !== confirmNewPassword) {
+      return res.render("user/edit", {
+        userInfo: user,
+        errorMessage:
+          "The newly entered password does not match the confirmed password.",
+      });
+    }
+
+    const isPasswordValid = await bcrypt.compare(
+      currentPassword,
+      user.password
+    );
+
+    if (!isPasswordValid) {
+      return res.render("user/edit", {
+        userInfo: user,
+        errorMessage: "Current password is incorrect",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+
+    await user.save();
+
+    return res.render("user/edit", {
+      userInfo: user,
+      successMessage: "Profile updated successfully!",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("Internal Server Error");
+  }
+});
+
+// Add this route to your existing code
+router.post("/delete", isLoggedIn, async (req, res) => {
+  try {
+    const user = await User.findById(req.session.currentUser._id);
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    if (await User.findByIdAndDelete(req.session.currentUser._id)) {
+      console.log("User deleted successfully");
+    }
+
+    req.session.destroy((err) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).send("Error occurred during deletion");
+      }
+      return res.redirect("/");
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("Internal Server Error");
+  }
 });
 
 module.exports = router;
