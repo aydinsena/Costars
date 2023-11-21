@@ -145,7 +145,6 @@ router.post("/login", isLoggedOut, (req, res, next) => {
 
           // Add the user object to the session object
           req.session.currentUser = user.toObject();
-          console.log("bune", user.toObject());
           // Remove the password field
           delete req.session.currentUser.password;
 
