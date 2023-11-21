@@ -63,11 +63,11 @@ router.post("/wallet", isLoggedIn, (req, res, next) => {
     .catch((err) => console.log(err));
 });
 
-router.get("/edit", (req, res) => {
+router.get("/edit", isLoggedIn, (req, res) => {
   res.render("user/edit", { userInfo: req.session.currentUser });
 });
 
-router.post("/edit", async (req, res) => {
+router.post("/edit", isLoggedIn, async (req, res) => {
   const { name, email, currentPassword, newPassword, confirmNewPassword } =
     req.body;
 
