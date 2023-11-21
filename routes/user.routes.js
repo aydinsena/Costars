@@ -18,6 +18,7 @@ router.get("/wallet", isLoggedIn, (req, res, next) => {
           userInfo: req.session.currentUser,
           data: response.data,
           walletInfo: resp.walletentity.walletvalues,
+          walletTotal: resp.walletentity.total,
         });
       });
   });
@@ -25,14 +26,15 @@ router.get("/wallet", isLoggedIn, (req, res, next) => {
 
 router.post("/wallet", isLoggedIn, (req, res, next) => {
   const { name, amount } = req.body;
+  let totalValue = 0;
   axios
     .get("https://api.coinlore.net/api/tickers/")
     .then((response) => {
       const coinFound = response.data.data.find((coin) => coin.name === name);
-      console.log(coinFound.price_usd);
+      // console.log(coinFound.price_usd);
       const userId = req.session.currentUser._id;
-      console.log(userId);
-      const sumValue = amount * coinFound.price_usd;
+      // console.log(userId);
+      const sumValue = (amount * coinFound.price_usd).toFixed(3);
       User.findById(userId)
         .populate("walletentity")
         .then((user) => {
@@ -43,6 +45,14 @@ router.post("/wallet", isLoggedIn, (req, res, next) => {
             sum: sumValue,
           });
           return user.walletentity.save();
+        })
+        .then((wallet) => {
+          wallet.walletvalues.forEach((e) => {
+            totalValue += parseFloat(e.sum);
+          });
+          console.log(totalValue);
+          wallet.total = totalValue.toFixed(3);
+          return wallet.save();
         });
     })
 
