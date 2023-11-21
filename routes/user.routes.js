@@ -23,6 +23,7 @@ router.get("/wallet", isLoggedIn, (req, res, next) => {
       });
   });
 });
+
 //! refactor this code
 //! change the format of the number values
 router.post("/wallet", isLoggedIn, (req, res, next) => {
@@ -65,7 +66,6 @@ router.post("/wallet", isLoggedIn, (req, res, next) => {
 
 router.get("/coins", isLoggedIn, (req, res, next) => {
   axios.get("https://api.coinlore.net/api/tickers/").then((response) => {
-    //res.send(response.data.data);
     res.render("user/coins", { coinData: response.data.data });
   });
 });
