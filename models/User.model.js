@@ -18,7 +18,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    walletentity: { type: Schema.Types.ObjectId, ref: "wallet" },
+    walletentity: { type: Schema.Types.ObjectId, ref: "Wallet" },
 
     favCoins: [
       {

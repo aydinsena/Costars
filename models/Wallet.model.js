@@ -8,6 +8,7 @@ const walletSchema = new Schema(
         name: String,
         amount: Number,
         sum: Number,
+        currentPrice: Number,
       },
     ],
     total: Number,
