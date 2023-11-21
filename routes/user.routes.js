@@ -99,16 +99,13 @@ router.post("/edit", isLoggedIn, async (req, res) => {
 
     await user.save();
 
-    return res.redirect("/user/edit-confirmation");
+    return res.render("/user/edit", {
+      successMessage: "profile update is succesfully",
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).send("Internal Server Error");
   }
 });
 
-router.get("/edit-confirmation", (req, res) => {
-  res.render("user/edit-confirmation", {
-    userInfo: req.session.currentUser,
-  });
-});
 module.exports = router;

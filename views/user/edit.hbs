@@ -12,4 +12,9 @@
   <input type="password" name="confirmNewPassword" />
   <button class="submit-btn" type="submit">Submit</button>
   <button class="delete-btn" type="submit">Delete my profile</button>
+
+  {{#if successMessage}}
+   <h2>{{successMessage}}</h2> 
+  {{/if}}
+
 </form>
