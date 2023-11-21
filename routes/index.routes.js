@@ -7,7 +7,7 @@ const axios = require("axios");
 router.get("/", (req, res, next) => {
   axios
     .get(
-      "1https://newsdata.io/api/1/news?apikey=pub_331297f2115fb2e3329df632dc74768a0f24f&q=Crypto%20currency"
+      "https://newsdata.io/api/1/news?apikey=pub_331297f2115fb2e3329df632dc74768a0f24f&q=Crypto%20currency"
     )
     .then((response) => {
       //console.log(response.data);

@@ -1,0 +1,15 @@
+<h2>Edit your profile</h2>
+<form class="edit-form" action="/user/edit" method="post">
+  <label for="name">Name</label>
+  <input type="text" name="name" value={{userInfo.name}} />
+  <label for="email">Email</label>
+  <input type="text" name="email" value={{userInfo.email}} />
+  <label for="current-password">Current Password</label>
+  <input type="password" name="currentPassword" />
+  <label for="new-password">New Password</label>
+  <input type="password" name="newPassword" />
+  <label for="confirm-new-password">Confirm New Password</label>
+  <input type="password" name="confirmNewPassword" />
+  <button class="submit-btn" type="submit">Submit</button>
+  <button class="delete-btn" type="submit">Delete my profile</button>
+</form>
