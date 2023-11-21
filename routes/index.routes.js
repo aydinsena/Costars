@@ -3,7 +3,6 @@ const router = express.Router();
 const axios = require("axios");
 
 /* GET home page */
-//!to prevent unnecessary api call i commented it
 router.get("/", (req, res, next) => {
   axios
     .get(

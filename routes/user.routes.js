@@ -25,6 +25,8 @@ router.get("/wallet", isLoggedIn, (req, res, next) => {
   });
 });
 
+//! refactor this code
+//! change the format of the number values
 router.post("/wallet", isLoggedIn, (req, res, next) => {
   const { name, amount } = req.body;
   let totalValue = 0;
@@ -63,6 +65,36 @@ router.post("/wallet", isLoggedIn, (req, res, next) => {
     .catch((err) => console.log(err));
 });
 
+router.get("/coins", isLoggedIn, (req, res, next) => {
+  axios.get("https://api.coinlore.net/api/tickers/").then((response) => {
+    res.render("user/coins", { coinData: response.data.data });
+  });
+});
+
+router.post("/coins", isLoggedIn, async (req, res, next) => {
+  try {
+    const { favCoin } = req.body;
+    const userId = req.session.currentUser._id;
+    const response = await axios.get("https://api.coinlore.net/api/tickers/");
+    const coinData = response.data.data;
+    const user = await User.findById(userId);
+    if (user.favCoins.includes(favCoin)) {
+      return res.render("user/coins", {
+        coinData: coinData,
+        message: "The coin is already in your favorite",
+      });
+    }
+    user.favCoins.push(favCoin);
+    await user.save();
+
+    res.render("user/coins", {
+      coinData: coinData,
+      message: "Coin added to favorites successfully",
+    });
+  } catch (err) {
+    res.render("user/coins", {
+      message: " An error occurred while processing your request",
+    });
 router.get("/edit", isLoggedIn, (req, res) => {
   res.render("user/edit", { userInfo: req.session.currentUser });
 });
