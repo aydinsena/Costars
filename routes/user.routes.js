@@ -35,7 +35,40 @@ router.get("/dashboard", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.post("/dashboard", isLoggedIn, async (req, res, next) => {});
+router.post("/dashboard", isLoggedIn, async (req, res, next) => {
+  try {
+    const { unfavCoin } = req.body;
+    console.log("thecoin will be removed", unfavCoin);
+
+    const userId = req.session.currentUser._id;
+    const response = await axios.get("https://api.coinlore.net/api/tickers/");
+    const getUserFavs = await User.findById(userId);
+
+    const favCoinNames = getUserFavs.favCoins;
+    const removeItem = favCoinNames.indexOf(unfavCoin);
+    if (removeItem !== -1) {
+      favCoinNames.splice(removeItem, 1);
+      await getUserFavs.save();
+    }
+    console.log(favCoinNames);
+    if (favCoinNames.length === 0) {
+      return res.render("user/dashboard", {
+        message: "You have no coin faved",
+        userInfo: req.session.currentUser,
+      });
+    }
+    const fetchUserCoins = response.data.data.filter((coin) =>
+      favCoinNames.includes(coin.name)
+    );
+    res.render("user/dashboard", {
+      fetchedCoins: fetchUserCoins,
+      userInfo: req.session.currentUser,
+      message: "Coin removed successfully",
+    });
+  } catch (err) {
+    console.log("smt went wrong while removing");
+  }
+});
 
 router.get("/wallet", isLoggedIn, (req, res, next) => {
   axios.get("https://api.coinlore.net/api/tickers/").then((response) => {

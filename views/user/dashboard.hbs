@@ -2,10 +2,10 @@
 
 <h2>Here is your fav Coins</h2>
        {{#if message}}
-       <h3>{{message}}</h3>
+         <p>{{message}}</p>
         {{/if}}
-        {{#unless message}}
-          <table>
+        {{#if fetchedCoins}}
+    <table>
     <thead>
       <tr>
         <th>Name</th>
@@ -29,18 +29,15 @@
           <td>{{market_cap_usd}}</td>
           <td>{{volume24}}</td>
           <td>
-            <form action="/user/coins" method="POST"> 
-            <input type="hidden" name="favCoin" value="{{name}}">
+            <form action="/user/dashboard" method="POST"> 
+            <input type="hidden" name="unfavCoin" value="{{name}}">
             <button type="submit">Remove From Favorites</button>
             </form>
           </td>
-
         </tr>
       {{/each}}
-
     </tbody>
   </table>
-  
-        {{/unless}}
+  {{/if}}
 
 
