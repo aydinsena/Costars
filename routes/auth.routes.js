@@ -10,6 +10,7 @@ const saltRounds = 10;
 
 // Require the User model in order to interact with the database
 const User = require("../models/User.model");
+const Wallet = require("../models/Wallet.model");
 
 // Require necessary (isLoggedOut and isLiggedIn) middleware in order to control access to specific routes
 const isLoggedOut = require("../middleware/isLoggedOut");
@@ -62,6 +63,20 @@ router.post("/signup", isLoggedOut, (req, res) => {
     .then((hashedPassword) => {
       // Create a user and save it in the database
       return User.create({ name, email, password: hashedPassword });
+    })
+    .then((createdUser) => {
+      user = createdUser;
+
+      // Create an empty wallet and associate it with the user
+      return Wallet.create({ walletvalues: [], total: 0 });
+    })
+    .then((createdWallet) => {
+      wallet = createdWallet;
+
+      // Associate the user with the wallet
+      user.walletentity = wallet._id;
+
+      return user.save();
     })
     .then((user) => {
       res.redirect("/auth/login");
