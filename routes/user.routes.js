@@ -158,4 +158,20 @@ router.post("/coins", isLoggedIn, async (req, res, next) => {
   }
 });
 
+router.get("/news", isLoggedIn, (req, res, next) => {
+  axios
+    .get(
+      "https://newsdata.io/api/1/news?apikey=pub_331297f2115fb2e3329df632dc74768a0f24f&q=Crypto%20currency"
+    )
+    .then((response) => {
+      //console.log(response.data);
+      res.send(response.data);
+      res.render("user/news", { news: response.data });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.render("user/news", { news: [] });
+    });
+});
+
 module.exports = router;

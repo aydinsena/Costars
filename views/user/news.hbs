@@ -1,0 +1,17 @@
+<h1>News Page</h1>
+<div class="card-group">
+
+
+{{#each news.results}}
+<div class="card" style="width: 18rem;">
+    {{#if image_url}}
+  <img src="{{image_url}}" class="card-img-top" alt="coinnewsimage">
+  {{/if}}
+  <div class="card-body">
+    <h5 class="card-title">{{title}}</h5>
+    <p class="card-text">{{description}}</p>
+    <a href="{{link}}" class="btn btn-primary">Check</a>
+  </div>
+</div>
+{{/each}}
+</div>
