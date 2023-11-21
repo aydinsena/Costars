@@ -82,7 +82,11 @@ router.post("/edit", isLoggedIn, async (req, res) => {
     user.email = email;
 
     if (newPassword !== confirmNewPassword) {
-      return res.status(400).send("Passwords do not match");
+      return res.render("user/edit", {
+        userInfo: user,
+        errorMessage:
+          "The newly entered password does not match the confirmed password.",
+      });
     }
 
     const isPasswordValid = await bcrypt.compare(
@@ -91,7 +95,10 @@ router.post("/edit", isLoggedIn, async (req, res) => {
     );
 
     if (!isPasswordValid) {
-      return res.status(400).send("Current password is incorrect");
+      return res.render("user/edit", {
+        userInfo: user,
+        errorMessage: "Current password is incorrect",
+      });
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
@@ -99,8 +106,35 @@ router.post("/edit", isLoggedIn, async (req, res) => {
 
     await user.save();
 
-    return res.render("/user/edit", {
-      successMessage: "profile update is succesfully",
+    return res.render("user/edit", {
+      userInfo: user,
+      successMessage: "Profile updated successfully!",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("Internal Server Error");
+  }
+});
+
+// Add this route to your existing code
+router.post("/delete", isLoggedIn, async (req, res) => {
+  try {
+    const user = await User.findById(req.session.currentUser._id);
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    if (await User.findByIdAndDelete(req.session.currentUser._id)) {
+      console.log("User deleted successfully");
+    }
+
+    req.session.destroy((err) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).send("Error occurred during deletion");
+      }
+      return res.redirect("/");
     });
   } catch (error) {
     console.log(error);

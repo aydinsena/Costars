@@ -11,10 +11,13 @@
   <label for="confirm-new-password">Confirm New Password</label>
   <input type="password" name="confirmNewPassword" />
   <button class="submit-btn" type="submit">Submit</button>
-  <button class="delete-btn" type="submit">Delete my profile</button>
+  <button class="delete-btn" type="submit" formaction="/user/delete">Delete my
+    profile</button>
 
   {{#if successMessage}}
-   <h2>{{successMessage}}</h2> 
+    <p>{{successMessage}}</p>
   {{/if}}
-
+  {{#if errorMessage}}
+    <p>{{errorMessage}}</p>
+  {{/if}}
 </form>
