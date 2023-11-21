@@ -5,9 +5,37 @@ const axios = require("axios");
 const Wallet = require("../models/Wallet.model");
 const User = require("../models/User.model");
 
-router.get("/dashboard", isLoggedIn, (req, res, next) => {
-  res.render("user/dashboard", { userInfo: req.session.currentUser });
+router.get("/dashboard", isLoggedIn, async (req, res, next) => {
+  try {
+    const response = await axios.get("https://api.coinlore.net/api/tickers");
+    const userId = req.session.currentUser._id;
+    const getUserFavs = await User.findById(userId);
+
+    // console.log(response.data.data);
+    // console.log(getUserFavs._id);
+
+    const favCoinNames = getUserFavs.favCoins;
+    // console.log(getUserFavs.favCoins);
+    if (favCoinNames.length === 0) {
+      return res.render("user/dashboard", {
+        message: "You have no coin faved",
+        userInfo: req.session.currentUser,
+      });
+    }
+    const fetchUserCoins = response.data.data.filter((coin) =>
+      favCoinNames.includes(coin.name)
+    );
+    // console.log(fetchUserCoins);
+    res.render("user/dashboard", {
+      fetchedCoins: fetchUserCoins,
+      userInfo: req.session.currentUser,
+    });
+  } catch (err) {
+    console.log("smt weng wrong");
+  }
 });
+
+router.post("/dashboard", isLoggedIn, async (req, res, next) => {});
 
 router.get("/wallet", isLoggedIn, (req, res, next) => {
   axios.get("https://api.coinlore.net/api/tickers/").then((response) => {
