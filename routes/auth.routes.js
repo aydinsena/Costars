@@ -10,6 +10,7 @@ const saltRounds = 10;
 
 // Require the User model in order to interact with the database
 const User = require("../models/User.model");
+const Wallet = require("../models/Wallet.model");
 
 // Require necessary (isLoggedOut and isLiggedIn) middleware in order to control access to specific routes
 const isLoggedOut = require("../middleware/isLoggedOut");
@@ -63,6 +64,20 @@ router.post("/signup", isLoggedOut, (req, res) => {
       // Create a user and save it in the database
       return User.create({ name, email, password: hashedPassword });
     })
+    .then((createdUser) => {
+      user = createdUser;
+
+      // Create an empty wallet and associate it with the user
+      return Wallet.create({ walletvalues: [], total: 0 });
+    })
+    .then((createdWallet) => {
+      wallet = createdWallet;
+
+      // Associate the user with the wallet
+      user.walletentity = wallet._id;
+
+      return user.save();
+    })
     .then((user) => {
       res.redirect("/auth/login");
     })
@@ -89,7 +104,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
   const { email, password } = req.body;
 
   // Check that email, and password are provided
-  if ( email === "" || password === "") {
+  if (email === "" || password === "") {
     res.status(400).render("auth/login", {
       errorMessage:
         "All fields are mandatory. Please provide email and password.",
@@ -130,10 +145,11 @@ router.post("/login", isLoggedOut, (req, res, next) => {
 
           // Add the user object to the session object
           req.session.currentUser = user.toObject();
+          console.log("bune", user.toObject());
           // Remove the password field
           delete req.session.currentUser.password;
 
-          res.redirect("/");
+          res.redirect("/user/dashboard");
         })
         .catch((err) => next(err)); // In this case, we send error handling to the error handling middleware.
     })
@@ -143,12 +159,13 @@ router.post("/login", isLoggedOut, (req, res, next) => {
 // GET /auth/logout
 router.get("/logout", isLoggedIn, (req, res) => {
   req.session.destroy((err) => {
+    res.clearCookie("connect.sid");
     if (err) {
-      res.status(500).render("auth/logout", { errorMessage: err.message });
+      res.status(500).render("/auth/logout", { errorMessage: err.message });
       return;
     }
 
-    res.redirect("/");
+    res.redirect("/auth/login");
   });
 });
 
