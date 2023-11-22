@@ -71,59 +71,68 @@ router.post("/dashboard", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get("/wallet", isLoggedIn, (req, res, next) => {
-  axios.get("https://api.coinlore.net/api/tickers/").then((response) => {
-    User.findById(req.session.currentUser._id)
-      .populate("walletentity")
-      .then((resp) => {
-        res.render("user/wallet", {
-          userInfo: req.session.currentUser,
-          data: response.data,
-          walletInfo: resp.walletentity.walletvalues,
-          walletTotal: resp.walletentity.total,
-        });
-      });
+router.get("/wallet", isLoggedIn, async (req, res, next) => {
+  const apiCall = await axios.get("https://api.coinlore.net/api/tickers/");
+  const userId = req.session.currentUser._id;
+  const findUser = await User.findById(userId).populate("walletentity");
+  const currentPrices = [];
+  const amountsHeld = [];
+  let totalWorth = 0;
+
+  const bringWalletValues = findUser.walletentity.walletvalues.forEach((e) => {
+    amountsHeld.push(e.amount);
+    const findCoinAPI = apiCall.data.data.find((coin) => coin.name === e.name);
+    currentPrices.push(findCoinAPI.price_usd);
+  });
+  totalWorth = currentPrices.reduce((sum, value, index) => {
+    return sum + value * amountsHeld[index];
+  }, 0);
+  await res.render("user/wallet", {
+    userInfo: req.session.currentUser,
+    data: apiCall.data,
+    walletInfo: findUser.walletentity.walletvalues,
+    walletTotal: findUser.walletentity.total,
+    apiCurrentValue: currentPrices,
+    totalWorth,
   });
 });
 
-//! refactor this code
-//! change the format of the number values
-router.post("/wallet", isLoggedIn, (req, res, next) => {
-  const { name, amount } = req.body;
-  let totalValue = 0;
-  axios
-    .get("https://api.coinlore.net/api/tickers/")
-    .then((response) => {
-      const coinFound = response.data.data.find((coin) => coin.name === name);
-      // console.log(coinFound.price_usd);
-      const userId = req.session.currentUser._id;
-      // console.log(userId);
-      const sumValue = (amount * coinFound.price_usd).toFixed(3);
-      User.findById(userId)
-        .populate("walletentity")
-        .then((user) => {
-          user.walletentity.walletvalues.push({
-            name,
-            amount,
-            currentPrice: coinFound.price_usd,
-            sum: sumValue,
-          });
-          return user.walletentity.save();
-        })
-        .then((wallet) => {
-          wallet.walletvalues.forEach((e) => {
-            totalValue += parseFloat(e.sum);
-          });
-          console.log(totalValue);
-          wallet.total = totalValue.toFixed(3);
-          return wallet.save();
-        });
-    })
+router.post("/wallet", isLoggedIn, async (req, res, next) => {
+  try {
+    let totalValue = 0;
+    const apiCall = await axios.get("https://api.coinlore.net/api/tickers/");
+    const { name, amount } = req.body;
+    const userId = req.session.currentUser._id;
+    const findUser = await User.findById(userId).populate("walletentity");
+    const findInApi = await apiCall.data.data.find(
+      (coin) => coin.name === name
+    );
+    const sumValue = (amount * findInApi.price_usd).toFixed(3);
+    const updatedWalletValue = {
+      name,
+      amount,
+      currentPrice: findInApi.price_usd,
+      sum: sumValue,
+    };
 
-    .then((response) => {
-      res.redirect("/user/wallet");
-    })
-    .catch((err) => console.log(err));
+    findUser.walletentity.walletvalues.push(updatedWalletValue);
+    await findUser.walletentity.save();
+
+    const calculateTotal = await findUser.walletentity.walletvalues.forEach(
+      (e) => {
+        totalValue += parseFloat(e.sum);
+      }
+    );
+    const changeTotal = await Wallet.findById(findUser.walletentity);
+
+    changeTotal.total = totalValue.toFixed(3);
+    await changeTotal.save();
+
+    await res.redirect("/user/wallet");
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send("Internal Server Error");
+  }
 });
 
 router.get("/coins", isLoggedIn, (req, res, next) => {

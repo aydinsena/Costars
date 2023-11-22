@@ -1,4 +1,11 @@
 <h1> Welcome to your wallet {{userInfo.name}}</h1>
+<div style="background-color : red">
+  <p>The total price when you bought: {{walletTotal}}</p>
+</div>
+<div style="background-color : green">
+  <p>The worth of your current value: {{totalWorth}}</p>
+</div>
+
 
 <form action="/user/wallet" method="POST">
   <label>
@@ -16,16 +23,37 @@
   <button type="submit">Add the value</button>
 </form>
 
-<ul>
-
+<table>
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Amount</th>
+        <th>sum</th>
+        <th>The Price User Bought</th>
+        <th>Current Price of Coin</th>
+      </tr>
+    </thead>
+<tbody>
   {{#each walletInfo}}
-    <li>
-      name:
-      {{name}}, amount:
+  <tr>
+    <td>
+      {{name}}
+    </td>
+    <td>
       {{amount}}
-      sum:{{sum}}
-      currentprice :{{currentPrice}}</li>
+    </td>
+    <td>
+      {{sum}}
+    </td>
+    <td>
+      {{currentPrice}}
+      
+    </td>
+       {{#with (lookup ../apiCurrentValue @index)}}
+          <td>{{this}}</td>
+        {{/with}}
+  </tr>
   {{/each}}
 
-</ul>
-<p>Total: {{walletTotal}}</p>
+</tbody>
+</table>
