@@ -1,17 +1,15 @@
 <h1>News Page</h1>
-<div class="card-group">
+<h3>Here you can reach the crypto currency related news.</h3>
 
-
-{{#each news.results}}
-<div class="card" style="width: 18rem;">
-    {{#if image_url}}
-  <img src="{{image_url}}" class="card-img-top" alt="coinnewsimage">
-  {{/if}}
-  <div class="card-body">
-    <h5 class="card-title">{{title}}</h5>
-    <p class="card-text">{{description}}</p>
-    <a href="{{link}}" class="btn btn-primary">Check</a>
-  </div>
-</div>
-{{/each}}
+<div class="row row-cols-1 row-cols-md-3 g-4">
+  {{#each news.data}}
+    <div class="col">
+      <div class="card">
+          <img src="{{thumbnail}}" class="card-img-top" alt="coinnewsimage">
+        <h5 class="card-title">{{title}}</h5>
+        <p class="card-text" id="description">{{description}}</p>
+        <a href="{{url}}" class="btn btn-primary">Check</a>
+      </div>
+    </div>
+  {{/each}}
 </div>
