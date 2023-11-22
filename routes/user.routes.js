@@ -144,12 +144,12 @@ router.post("/wallet-delete", isLoggedIn, async (req, res, next) => {
     const findSameCoin = walletValues.find((coin) => coin.name === coinForm);
     const removeItem = walletValues.indexOf(findSameCoin);
     console.log(removeItem);
-    const walletId = findUser.walletentity._id;
-    console.log(walletId);
+
     if (removeItem !== -1) {
       walletValues.splice(removeItem, 1);
     }
     await findUser.save();
+    res.redirect("/user/wallet");
     console.log(findSameCoin, "same coin ");
   } catch (err) {
     console.log(err);
