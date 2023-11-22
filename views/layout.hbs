@@ -15,19 +15,21 @@
   </head>
 
   <body>
-    <nav>
-      {{#if isLoggedin}}
-        <a href="/auth/logout">Logout</a>
-        <a href="/user/dashboard">Dashboard</a>
-        <a href="/user/wallet">Wallet</a>
-        <a href="/user/coins">Coins</a>
-        <a href="/user/edit">Edit Profile</a>
-      {{else}}
-        <a href="/auth/signup">Sign up</a>
-        <a href="/auth/login">Login</a>
-
-      {{/if}}
-    </nav>
+<nav>
+  {{!-- <a href="/">Homepage</a> --}}
+  {{#if isLoggedin}}
+    <a href="/auth/logout">Logout</a>
+    <a href="/user/dashboard">Dashboard</a>
+    <a href="/user/wallet">Wallet</a>
+    <a href="/user/coins">Coins</a>
+    <a href="/user/news">News</a>
+    <a href="/user/edit">Edit Profile</a>
+  {{else}}
+    <a href="/auth/signup">Sign up</a>
+    <a href="/auth/login">Login</a>
+    
+  {{/if}}
+</nav>
 
     {{{body}}}
 

@@ -159,6 +159,24 @@ router.post("/coins", isLoggedIn, async (req, res, next) => {
   }
 });
 
+router.get("/news", isLoggedIn, async (req, res, next) => {
+  const options = {
+    method: "GET",
+    url: "https://cryptocurrency-news2.p.rapidapi.com/v1/coindesk",
+    headers: {
+      "X-RapidAPI-Key": "9b8e009986msh929dbcc05479ff0p1fdbd1jsn5d7df59cce93",
+      "X-RapidAPI-Host": "cryptocurrency-news2.p.rapidapi.com",
+    },
+  };
+
+  try {
+    const response = await axios.request(options);
+    res.render("user/news", { news: response.data });
+  } catch (error) {
+    res.render("user/news", { news: [] });
+    console.error(error);
+  }
+});
 router.get("/edit", isLoggedIn, (req, res) => {
   res.render("user/edit", { userInfo: req.session.currentUser });
 });
