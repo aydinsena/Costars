@@ -1,9 +1,14 @@
 <h1> Welcome to your wallet {{userInfo.name}}</h1>
+
+
+{{#if message}}
+<p>{{message}}</p>
+{{/if}}
 <div style="background-color : red">
-  <p>The total price when you bought: {{walletTotal}}</p>
+  <p>The total price of your coins when you bought them: {{walletTotal}}</p>
 </div>
 <div style="background-color : green">
-  <p>The worth of your current value: {{totalWorth}}</p>
+  <p>The worth of wallet: {{totalWorth}}</p>
 </div>
 
 
@@ -22,15 +27,15 @@
   </label>
   <button type="submit">Add the value</button>
 </form>
-
+{{#if walletInfo}}
 <table>
       <thead>
       <tr>
         <th>Name</th>
         <th>Amount</th>
         <th>sum</th>
-        <th>The Price User Bought</th>
-        <th>Current Price of Coin</th>
+        <th>The Price You Bought</th>
+        <th>The Current Price </th>
       </tr>
     </thead>
 <tbody>
@@ -63,3 +68,5 @@
 
 </tbody>
 </table>
+
+  {{/if}}
