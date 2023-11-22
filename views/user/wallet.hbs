@@ -15,27 +15,28 @@
 <form action="/user/wallet" method="POST">
   <label>
     Bitcoin Name
-    <select name="name">
+    <select class="form-select"  name="name">
       {{#each data.data}}
-        <option>{{name}}</option>
+        <option class="dropdown-item">{{name}}</option>
       {{/each}}
     </select>
   </label>
   <label>
     Amount
-    <input type="text" name="amount" placeholder="amount" />
+    <input class="form-control" type="text" name="amount" placeholder="amount" />
   </label>
-  <button type="submit">Add the value</button>
+  <button type="submit" class="btn btn-success">Add the value</button>
 </form>
 {{#if walletInfo}}
-<table>
+<table class="table table-striped">
       <thead>
       <tr>
-        <th>Name</th>
-        <th>Amount</th>
-        <th>sum</th>
-        <th>The Price You Bought</th>
-        <th>The Current Price </th>
+        <th scope="col">Name</th>
+        <th scope="col">Amount</th>
+        <th scope="col">sum</th>
+        <th scope="col">The Price You Bought</th>
+        <th scope="col">The Current Price </th>
+        <th scope="col">Delete </th>
       </tr>
     </thead>
 <tbody>
@@ -60,7 +61,7 @@
           <td>
             <form action="/user/wallet-delete" method="POST"> 
             <input type="hidden" name="coinForm" value="{{name}}">
-            <button type="submit">Delete</button>
+            <button   class="btn btn-danger" type="submit">Delete</button>
             </form>
           </td>
   </tr>
