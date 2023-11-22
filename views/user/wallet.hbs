@@ -52,6 +52,12 @@
        {{#with (lookup ../apiCurrentValue @index)}}
           <td>{{this}}</td>
         {{/with}}
+          <td>
+            <form action="/user/wallet-delete" method="POST"> 
+            <input type="hidden" name="coinForm" value="{{name}}">
+            <button type="submit">Delete</button>
+            </form>
+          </td>
   </tr>
   {{/each}}
 

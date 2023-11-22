@@ -135,6 +135,28 @@ router.post("/wallet", isLoggedIn, async (req, res, next) => {
   }
 });
 
+router.post("/wallet-delete", isLoggedIn, async (req, res, next) => {
+  try {
+    const { coinForm } = req.body;
+    const userId = req.session.currentUser._id;
+    const findUser = await User.findById(userId).populate("walletentity");
+    const walletValues = findUser.walletentity.walletvalues;
+    const findSameCoin = walletValues.find((coin) => coin.name === coinForm);
+    const removeItem = walletValues.indexOf(findSameCoin);
+    console.log(removeItem);
+    const walletId = findUser.walletentity._id;
+    console.log(walletId);
+    if (removeItem !== -1) {
+      walletValues.splice(removeItem, 1);
+    }
+    await findUser.save();
+    console.log(findSameCoin, "same coin ");
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send("Internal Server Error");
+  }
+});
+
 router.get("/coins", isLoggedIn, (req, res, next) => {
   axios.get("https://api.coinlore.net/api/tickers/").then((response) => {
     res.render("user/coins", { coinData: response.data.data });
