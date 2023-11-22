@@ -74,7 +74,6 @@ router.get("/wallet", isLoggedIn, async (req, res, next) => {
   const apiCall = await axios.get("https://api.coinlore.net/api/tickers/");
   const userId = req.session.currentUser._id;
   const findUser = await User.findById(userId).populate("walletentity");
-  const walletId = findUser.walletentity;
   const currentPrices = [];
   const amountsHeld = [];
   let totalWorth = 0;
@@ -174,7 +173,6 @@ router.post("/wallet-delete", isLoggedIn, async (req, res, next) => {
     }, 0);
 
     const oldTotal = await Wallet.findById(walletId);
-    console.log("newTotal", newTotal, "eskitotal", oldTotal.total);
 
     oldTotal.total = newTotal.toFixed(3);
     await oldTotal.save();
