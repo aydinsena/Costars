@@ -15,20 +15,23 @@
   </head>
 
   <body>
-<nav >
-  {{!-- <a href="/">Homepage</a> --}}
+<nav class="navbar navbar-light" style="background-color: #7661cc" >
+  <a class="navbar-brand" href="/">Co - Stars</a>
+  <ul class="nav nav-tabs">
+
   {{#if isLoggedin}}
-    <a href="/auth/logout">Logout</a>
-    <a href="/user/dashboard">Dashboard</a>
-    <a href="/user/wallet">Wallet</a>
-    <a href="/user/coins">Coins</a>
-    <a href="/user/news">News</a>
-    <a href="/user/edit">Edit Profile</a>
+   <li class="nav-item"> <a class="nav-link " href="/user/dashboard">Dashboard</a> </li>
+   <li class="nav-item"> <a class="nav-link" href="/user/news">News</a> </li>
+   <li class="nav-item"> <a class="nav-link" href="/user/coins">Coins</a> </li>
+  <li class="nav-item"> <a class="nav-link" href="/user/wallet">Wallet</a> </li>
+   <li class="nav-item my-2 my-sm-0"> <a class="nav-link" href="/user/edit">Edit Profile</a> </li>
+   <li class="nav-item"> <a class="nav-link " href="/auth/logout">Logout</a> </li>
   {{else}}
-    <a href="/auth/signup">Sign up</a>
-    <a href="/auth/login">Login</a>
     
+    <li class="nav-item"><a class="nav-link"  href="/auth/signup">Sign up</a></li>
+     <li class="nav-item"><a class="nav-link"  href="/auth/login">Login</a></li>
   {{/if}}
+  </ul>
 </nav>
 
     {{{body}}}

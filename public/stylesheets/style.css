@@ -71,6 +71,20 @@ h1 {
   margin-top: auto; /* Push the button to the bottom of the card */
 }
 
-.border{
-  border: none;
+.nav-link{
+  text-decoration: none !important; 
+  color:white !important
+}
+
+li{
+  font-style:  none;
+}
+
+.btn .btn-light {
+  background-color: #151269 !important ;
+}
+
+.navbar-brand{
+  color: white !important;
+  padding-left: 10px !important;
 }

@@ -129,7 +129,7 @@ router.get("/logout", isLoggedIn, (req, res) => {
       return;
     }
 
-    res.redirect("/auth/login");
+    res.redirect("/");
   });
 });
 
