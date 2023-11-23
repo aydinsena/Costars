@@ -1,23 +1,50 @@
-<h2>Edit your profile</h2>
-<form class="edit-form" action="/user/edit" method="post">
-  <label for="name">Name</label>
-  <input type="text" name="name" value={{userInfo.name}} />
-  <label for="email">Email</label>
-  <input type="text" name="email" value={{userInfo.email}} />
-  <label for="current-password">Current Password</label>
-  <input type="password" name="currentPassword" />
-  <label for="new-password">New Password</label>
-  <input type="password" name="newPassword" />
-  <label for="confirm-new-password">Confirm New Password</label>
-  <input type="password" name="confirmNewPassword" />
-  <button class="submit-btn" type="submit">Submit</button>
-  <button class="delete-btn" type="submit" formaction="/user/delete">Delete my
-    profile</button>
-
-  {{#if successMessage}}
+<p class="lead">Edit your profile</p>
+<div class="form-container">
+<form action="/user/edit" method="post" class="edit-form">
+  <div class="mb-3">
+    <label for="name" class="form-label">Name</label>
+    <input
+      type="text"
+      name="name"
+      value={{userInfo.name}}
+      class="form-control"
+    />
+  </div>
+  <div class="mb-3">
+    <label for="email" class="form-label">Email</label>
+    <input
+      type="text"
+      name="email"
+      value={{userInfo.email}}
+      class="form-control"
+    />
+  </div>
+  <div class="mb-3">
+    <label for="current-password" class="form-label">Current Password</label>
+    <input type="password" name="currentPassword" class="form-control" />
+  </div>
+  <div class="mb-3">
+    <label for="new-password" class="form-label">New Password</label>
+    <input type="password" name="newPassword" class="form-control" />
+  </div>
+  <div class="mb-3">
+    <label for="confirm-new-password" class="form-label">Confirm New Password</label>
+    <input type="password" name="confirmNewPassword" class="form-control" />
+  </div>
+  <div class="d-grid gap-2">
+    <button type="submit" class="btn btn-success">Submit</button>
+    <button
+      type="submit"
+      formaction="/user/delete"
+      class="btn btn-danger"
+    >Delete my profile</button>
+  </div>
+      {{#if successMessage}}
     <p>{{successMessage}}</p>
   {{/if}}
   {{#if errorMessage}}
     <p>{{errorMessage}}</p>
   {{/if}}
+  </div>
+
 </form>

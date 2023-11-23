@@ -1,27 +1,43 @@
 <h1>Welcome {{userInfo.name}} this is your Dashboard</h1>
-<div style="background-color : red">
-  <p>The total price when you bought: {{walletTotal}}</p>
-</div>
-<div style="background-color : green">
-  <p>The worth of your current value: {{totalWorth}}</p>
+
+<div class="row">
+  <div class="col-sm-6">
+    <div class="card border-info mb-3" style="max-width: 18rem;">
+      <div class="card-header">Total price when you bought coins</div>
+      <div class="card-body">
+        <p class="card-text">{{walletTotal}} $</p>
+      </div>
+    </div>
+   
+  </div>
+  <div class="col-sm-6">
+    <div class="card border-success mb-3" class="border" style="max-width: 18rem;">
+      <div class="card-header">The worth of your wallet</div>
+      <div class="card-body">
+        <p class="card-text">{{totalWorth}} $</p>
+      </div>
+    </div>
+  </div>
 </div>
 
+
+
 <h2>Here is your fav Coins</h2>
-{{#if message}}
-  <p>{{message}}</p>
-{{/if}}
-{{#if fetchedCoins}}
-  <table>
+       {{#if message}}
+         <p style="font-size:16px" class="alert alert-warning" role="alert" style="background-color:#beb9db !important ">{{message}}</p>
+        {{/if}}
+        {{#if fetchedCoins}}
+    <table class="table table-striped">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>1h%</th>
-        <th>24h%</th>
-        <th>7d%</th>
-        <th>Price</th>
-        <th>Market Cap</th>
-        <th>Volume 24</th>
-        <th>Add to Favorites</th>
+        <th scope="col">Name</th>
+        <th scope="col">1h%</th>
+        <th scope="col">24h%</th>
+        <th scope="col">7d%</th>
+        <th scope="col">Price</th>
+        <th scope="col">Market Cap</th>
+        <th scope="col">Volume 24</th>
+        <th scope="col">Add to Favorites</th>
       </tr>
     </thead>
     <tbody>
@@ -35,9 +51,9 @@
           <td>{{market_cap_usd}}</td>
           <td>{{volume24}}</td>
           <td>
-            <form action="/user/dashboard" method="POST">
-              <input type="hidden" name="unfavCoin" value="{{name}}" />
-              <button type="submit">Remove From Favorites</button>
+            <form action="/user/dashboard" method="POST"> 
+            <input type="hidden" name="unfavCoin" value="{{name}}">
+            <button type="submit"  class="btn btn-light" style=" background-color: #f1968a !important">Remove From Favorites</button>
             </form>
           </td>
         </tr>
