@@ -10,3 +10,63 @@ a {
 h1 {
   color: 15px;
 }
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+  margin: auto;
+}
+
+.edit-form label {
+  margin-bottom: 5px;
+}
+
+.edit-form input[type="text"],
+.edit-form input[type="password"],
+.edit-form input[type="email"] {
+  padding: 8px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+.edit-form .submit-btn,
+.edit-form .delete-btn {
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-form .delete-btn {
+  background-color: red;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.card {
+  height: 100%;
+}
+
+.card-img-top {
+  max-height: 100%;
+  width: 100%;
+  object-fit: cover; /* Ensures the image covers the entire container */
+}
+
+.card-title {
+  margin-top: 10px; /* Adjust as needed */
+}
+
+.card-text {
+  height: 80px; /* Set a fixed height for the description */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btn-primary {
+  margin-top: auto; /* Push the button to the bottom of the card */
+}

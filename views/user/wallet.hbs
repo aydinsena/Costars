@@ -1,0 +1,72 @@
+<h1> Welcome to your wallet {{userInfo.name}}</h1>
+
+
+{{#if message}}
+<p>{{message}}</p>
+{{/if}}
+<div style="background-color : red">
+  <p>The total price of your coins when you bought them: {{walletTotal}}</p>
+</div>
+<div style="background-color : green">
+  <p>The worth of wallet: {{totalWorth}}</p>
+</div>
+
+
+<form action="/user/wallet" method="POST">
+  <label>
+    Bitcoin Name
+    <select name="name">
+      {{#each data.data}}
+        <option>{{name}}</option>
+      {{/each}}
+    </select>
+  </label>
+  <label>
+    Amount
+    <input type="text" name="amount" placeholder="amount" />
+  </label>
+  <button type="submit">Add the value</button>
+</form>
+{{#if walletInfo}}
+<table>
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Amount</th>
+        <th>sum</th>
+        <th>The Price You Bought</th>
+        <th>The Current Price </th>
+      </tr>
+    </thead>
+<tbody>
+  {{#each walletInfo}}
+  <tr>
+    <td>
+      {{name}}
+    </td>
+    <td>
+      {{amount}}
+    </td>
+    <td>
+      {{sum}}
+    </td>
+    <td>
+      {{currentPrice}}
+      
+    </td>
+       {{#with (lookup ../apiCurrentValue @index)}}
+          <td>{{this}}</td>
+        {{/with}}
+          <td>
+            <form action="/user/wallet-delete" method="POST"> 
+            <input type="hidden" name="coinForm" value="{{name}}">
+            <button type="submit">Delete</button>
+            </form>
+          </td>
+  </tr>
+  {{/each}}
+
+</tbody>
+</table>
+
+  {{/if}}

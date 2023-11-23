@@ -1,0 +1,43 @@
+<h1>Coin page</h1>
+        {{#if message}}
+       <h3>{{message}}</h3>
+        {{/if}}
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>1h%</th>
+        <th>24h%</th>
+        <th>7d%</th>
+        <th>Price</th>
+        <th>Market Cap</th>
+        <th>Volume 24</th>
+        <th>Add to Favorites</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each coinData}}
+        <tr>
+          <td >{{name}}</td>
+ 
+          <td>{{percent_change_1h}}</td>
+          <td>{{percent_change_24h}}</td>
+          <td>{{percent_change_7d}}</td>
+          <td>{{price_usd}}</td>
+          <td>{{market_cap_usd}}</td>
+          <td>{{volume24}}</td>
+          <td>
+            <form action="/user/coins" method="POST"> 
+            <input type="hidden" name="favCoin" value="{{name}}">
+            <button type="submit">Add to Favorites</button>
+            </form>
+          </td>
+
+        </tr>
+      {{/each}}
+
+    </tbody>
+  </table>
+  
+
