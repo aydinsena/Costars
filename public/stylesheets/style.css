@@ -12,39 +12,23 @@ h1 {
 }
 
 .edit-form {
+  margin: 10px;
+  width: 50%;
+}
+
+.lead {
+  margin-top: 20px;
+}
+
+.form-container {
   display: flex;
-  flex-direction: column;
-  max-width: 300px;
-  margin: auto;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-.edit-form label {
-  margin-bottom: 5px;
-}
-
-.edit-form input[type="text"],
-.edit-form input[type="password"],
-.edit-form input[type="email"] {
-  padding: 8px;
-  margin-bottom: 15px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  width: 100%;
-}
-
-.edit-form .submit-btn,
-.edit-form .delete-btn {
-  padding: 10px;
-  margin-top: 10px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.edit-form .delete-btn {
-  background-color: red;
-  color: white;
-  margin-bottom: 10px;
+.form-label {
+  font-weight: bold;
 }
 
 .card {
