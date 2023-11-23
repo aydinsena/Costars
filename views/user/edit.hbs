@@ -1,4 +1,10 @@
 <p class="lead">Edit your profile</p>
+      {{#if successMessage}}
+    <p style="font-size:16px" class="alert alert-warning" role="alert" style="background-color:#beb9db !important ">{{successMessage}}</p>
+  {{/if}}
+  {{#if errorMessage}}
+    <p style="font-size:16px" class="alert alert-warning" role="alert" style="background-color:#beb9db !important ">{{errorMessage}}</p>
+  {{/if}}
 <div class="form-container">
 <form action="/user/edit" method="post" class="edit-form">
   <div class="mb-3">
@@ -39,12 +45,7 @@
       class="btn btn-danger"
     >Delete my profile</button>
   </div>
-      {{#if successMessage}}
-    <p>{{successMessage}}</p>
-  {{/if}}
-  {{#if errorMessage}}
-    <p>{{errorMessage}}</p>
-  {{/if}}
+
   </div>
 
 </form>
