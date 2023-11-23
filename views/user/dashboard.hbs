@@ -1,14 +1,30 @@
 <h1>Welcome {{userInfo.name}} this is your Dashboard</h1>
-<div style="background-color : red">
-  <p>The total price when you bought: {{walletTotal}}</p>
+
+<div class="row">
+  <div class="col-sm-6">
+    <div class="card border-info mb-3" style="max-width: 18rem;">
+      <div class="card-header">Total price when you bought coins</div>
+      <div class="card-body">
+        <p class="card-text">{{walletTotal}} $</p>
+      </div>
+    </div>
+   
+  </div>
+  <div class="col-sm-6">
+    <div class="card border-success mb-3" class="border" style="max-width: 18rem;">
+      <div class="card-header">The worth of your wallet</div>
+      <div class="card-body">
+        <p class="card-text">{{totalWorth}} $</p>
+      </div>
+    </div>
+  </div>
 </div>
-<div style="background-color : green">
-  <p>The worth of your current value: {{totalWorth}}</p>
-</div>
+
+
 
 <h2>Here is your fav Coins</h2>
        {{#if message}}
-         <p>{{message}}</p>
+         <p style="font-size:16px" class="alert alert-info" role="alert">{{message}}</p>
         {{/if}}
         {{#if fetchedCoins}}
     <table class="table table-striped">

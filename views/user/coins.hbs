@@ -1,19 +1,19 @@
-<h1>Coin page</h1>
+<h1>Welcome {{userInfo.name}} to Coins Page</h1>
         {{#if message}}
-       <h3>{{message}}</h3>
+       <p style="font-size:16px" class="alert alert-info" role="alert">{{message}}</p>
         {{/if}}
 
-  <table>
+  <table class="table table-striped">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>1h%</th>
-        <th>24h%</th>
-        <th>7d%</th>
-        <th>Price</th>
-        <th>Market Cap</th>
-        <th>Volume 24</th>
-        <th>Add to Favorites</th>
+        <th scope="col">Name</th>
+        <th scope="col">1h%</th>
+        <th scope="col">24h%</th>
+        <th scope="col">7d%</th>
+        <th scope="col">Price</th>
+        <th scope="col">Market Cap</th>
+        <th scope="col">Volume 24</th>
+        <th scope="col">Add to Favorites</th>
       </tr>
     </thead>
     <tbody>
@@ -30,7 +30,7 @@
           <td>
             <form action="/user/coins" method="POST"> 
             <input type="hidden" name="favCoin" value="{{name}}">
-            <button type="submit">Add to Favorites</button>
+            <button class="btn btn-success" type="submit">Add to Favorites</button>
             </form>
           </td>
 

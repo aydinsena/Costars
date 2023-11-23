@@ -70,3 +70,7 @@ h1 {
 .btn-primary {
   margin-top: auto; /* Push the button to the bottom of the card */
 }
+
+.border{
+  border: none;
+}
