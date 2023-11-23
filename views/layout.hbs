@@ -19,6 +19,7 @@
   <a class="navbar-brand" href="/">Co - Stars</a>
   <ul class="nav nav-tabs">
 
+
   {{#if isLoggedin}}
    <li class="nav-item"> <a class="nav-link " href="/user/dashboard">Dashboard</a> </li>
    <li class="nav-item"> <a class="nav-link" href="/user/news">News</a> </li>
@@ -26,6 +27,7 @@
   <li class="nav-item"> <a class="nav-link" href="/user/wallet">Wallet</a> </li>
    <li class="nav-item my-2 my-sm-0"> <a class="nav-link" href="/user/edit">Edit Profile</a> </li>
    <li class="nav-item"> <a class="nav-link " href="/auth/logout">Logout</a> </li>
+   
   {{else}}
     
     <li class="nav-item"><a class="nav-link"  href="/auth/signup">Sign up</a></li>
@@ -34,7 +36,9 @@
   </ul>
 </nav>
 
+
     {{{body}}}
+
 
     <script src="/js/script.js"></script>
     <script
