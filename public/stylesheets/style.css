@@ -24,13 +24,22 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
 }
 
 .form-label {
   font-weight: bold;
 }
 
+.btn {
+  border-color: transparent !important;
+}
+.btn-danger {
+  background-color: #f1968a !important;
+}
+
+.btn-success {
+  background-color: #8bd3c7 !important;
+}
 .card {
   height: 100%;
 }
