@@ -120,7 +120,6 @@ router.post("/login", isLoggedOut, (req, res, next) => {
     })
     .catch((err) => next(err));
 });
-
 router.get("/logout", isLoggedIn, (req, res) => {
   req.session.destroy((err) => {
     res.clearCookie("connect.sid");
@@ -128,8 +127,7 @@ router.get("/logout", isLoggedIn, (req, res) => {
       res.status(500).render("/auth/logout", { errorMessage: err.message });
       return;
     }
-
-    res.redirect("/auth/login");
+    res.redirect("/");
   });
 });
 
