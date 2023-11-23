@@ -38,7 +38,7 @@
     Amount
     <input class="form-control" type="text" name="amount" placeholder="amount" />
   </label>
-  <button type="submit" class="btn btn-light" style="background-color: #8bd3c7 !important">Add the value</button>
+  <button type="submit" class="btn btn-light" style="background-color: #8bd3c7 !important; color:white;">Add the value</button>
 </form>
 {{#if walletInfo}}
 <table class="table table-striped">
@@ -46,7 +46,7 @@
       <tr>
         <th scope="col">Name</th>
         <th scope="col">Amount</th>
-        <th scope="col">sum</th>
+        <th scope="col">Sum</th>
         <th scope="col">The Price You Bought</th>
         <th scope="col">The Current Price </th>
         <th scope="col">Delete </th>
@@ -74,7 +74,7 @@
           <td>
             <form action="/user/wallet-delete" method="POST"> 
             <input type="hidden" name="coinForm" value="{{name}}">
-            <button  class="btn btn-light" style="background-color : #f1968a !important"type="submit">Delete</button>
+            <button  class="btn btn-light" style="background-color : #f1968a !important ; color:white;"type="submit">Delete</button>
             </form>
           </td>
   </tr>
