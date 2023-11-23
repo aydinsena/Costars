@@ -12,41 +12,34 @@ h1 {
 }
 
 .edit-form {
+  margin: 10px;
+  width: 50%;
+}
+
+.lead {
+  margin-top: 20px;
+}
+
+.form-container {
   display: flex;
-  flex-direction: column;
-  max-width: 300px;
-  margin: auto;
+  justify-content: center;
+  align-items: center;
 }
 
-.edit-form label {
-  margin-bottom: 5px;
+.form-label {
+  font-weight: bold;
 }
 
-.edit-form input[type="text"],
-.edit-form input[type="password"],
-.edit-form input[type="email"] {
-  padding: 8px;
-  margin-bottom: 15px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  width: 100%;
+.btn {
+  border-color: transparent !important;
+}
+.btn-danger {
+  background-color: #f1968a !important;
 }
 
-.edit-form .submit-btn,
-.edit-form .delete-btn {
-  padding: 10px;
-  margin-top: 10px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+.btn-success {
+  background-color: #8bd3c7 !important;
 }
-
-.edit-form .delete-btn {
-  background-color: red;
-  color: white;
-  margin-bottom: 10px;
-}
-
 .card {
   height: 100%;
 }
@@ -54,37 +47,37 @@ h1 {
 .card-img-top {
   max-height: 100%;
   width: 100%;
-  object-fit: cover; /* Ensures the image covers the entire container */
+  object-fit: cover;
 }
 
 .card-title {
-  margin-top: 10px; /* Adjust as needed */
+  margin-top: 10px;
 }
 
 .card-text {
-  height: 80px; /* Set a fixed height for the description */
+  height: 80px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .btn-primary {
-  margin-top: auto; /* Push the button to the bottom of the card */
+  margin-top: auto;
 }
 
-.nav-link{
-  text-decoration: none !important; 
-  color:white !important
+.nav-link {
+  text-decoration: none !important;
+  color: white !important;
 }
 
-li{
-  font-style:  none;
+li {
+  font-style: none;
 }
 
 .btn .btn-light {
   background-color: #151269 !important ;
 }
 
-.navbar-brand{
+.navbar-brand {
   color: white !important;
   padding-left: 10px !important;
 }
