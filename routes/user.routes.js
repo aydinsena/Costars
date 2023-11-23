@@ -8,31 +8,44 @@ const User = require("../models/User.model");
 
 router.get("/dashboard", isLoggedIn, async (req, res, next) => {
   try {
-    const response = await axios.get("https://api.coinlore.net/api/tickers");
+    const coinData = await axios.get("https://api.coinlore.net/api/tickers");
     const userId = req.session.currentUser._id;
-    const getUserFavs = await User.findById(userId);
-
-    // console.log(response.data.data);
-    // console.log(getUserFavs._id);
-
-    const favCoinNames = getUserFavs.favCoins;
-    // console.log(getUserFavs.favCoins);
-    if (favCoinNames.length === 0) {
-      return res.render("user/dashboard", {
-        message: "You have no coin faved",
-        userInfo: req.session.currentUser,
-      });
-    }
-    const fetchUserCoins = response.data.data.filter((coin) =>
+    const currentUser = await User.findById(userId);
+    const userWithWallet = await User.findById(userId).populate("walletentity");
+    const favCoinNames = currentUser.favCoins;
+    const userFavCoinData = coinData.data.data.filter((coin) =>
       favCoinNames.includes(coin.name)
     );
-    // console.log(fetchUserCoins);
+
+    const currentPrices = [];
+    const amountsHeld = [];
+    let totalWorth = 0;
+
+    userWithWallet.walletentity.walletvalues.forEach((e) => {
+      amountsHeld.push(e.amount);
+      const findCoinAPI = coinData.data.data.find(
+        (coin) => coin.name === e.name
+      );
+      currentPrices.push(findCoinAPI.price_usd);
+    });
+    totalWorth = currentPrices.reduce((sum, value, index) => {
+      return sum + value * amountsHeld[index];
+    }, 0);
+
+    console.log(userWithWallet.walletentity.total);
+    console.log(totalWorth);
+    console.log(currentPrices);
+
     res.render("user/dashboard", {
-      fetchedCoins: fetchUserCoins,
+      fetchedCoins: userFavCoinData,
       userInfo: req.session.currentUser,
+      walletInfo: userWithWallet.walletentity.walletvalues,
+      walletTotal: userWithWallet.walletentity.total,
+      apiCurrentValue: currentPrices, //apiden gelen total
+      totalWorth,
     });
   } catch (err) {
-    console.log("smt weng wrong");
+    console.log("Something went wrong in the dashboard route:", err);
   }
 });
 
@@ -87,18 +100,6 @@ router.get("/wallet", isLoggedIn, async (req, res, next) => {
   totalWorth = currentPrices.reduce((sum, value, index) => {
     return sum + value * amountsHeld[index];
   }, 0);
-  if (!valuesArray || valuesArray.length === 0) {
-    return res.render("user/wallet", {
-      message: "You haven't added any value",
-      userInfo: req.session.currentUser,
-      data: apiCall.data,
-      walletInfo: findUser.walletentity.walletvalues,
-      walletTotal: findUser.walletentity.total,
-      apiCurrentValue: currentPrices,
-      totalWorth,
-    });
-  }
-
   res.render("user/wallet", {
     userInfo: req.session.currentUser,
     data: apiCall.data,

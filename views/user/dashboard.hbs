@@ -1,4 +1,10 @@
 <h1>Welcome {{userInfo.name}} this is your Dashboard</h1>
+<div style="background-color : red">
+  <p>The total price when you bought: {{walletTotal}}</p>
+</div>
+<div style="background-color : green">
+  <p>The worth of your current value: {{totalWorth}}</p>
+</div>
 
 <h2>Here is your fav Coins</h2>
        {{#if message}}
@@ -21,7 +27,7 @@
     <tbody>
       {{#each fetchedCoins}}
         <tr>
-          <td >{{name}}</td>
+          <td>{{name}}</td>
           <td>{{percent_change_1h}}</td>
           <td>{{percent_change_24h}}</td>
           <td>{{percent_change_7d}}</td>
@@ -38,6 +44,4 @@
       {{/each}}
     </tbody>
   </table>
-  {{/if}}
-
-
+{{/if}}
