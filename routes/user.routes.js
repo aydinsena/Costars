@@ -237,7 +237,7 @@ router.get("/news", isLoggedIn, async (req, res, next) => {
     method: "GET",
     url: "https://cryptocurrency-news2.p.rapidapi.com/v1/coindesk",
     headers: {
-      "X-RapidAPI-Key": "9b8e009986msh929dbcc05479ff0p1fdbd1jsn5d7df59cce93",
+      "X-RapidAPI-Key": "0eb0036b21msh672e40da5ea5ad2p15e6cfjsn6d5e19a647bf",
       "X-RapidAPI-Host": "cryptocurrency-news2.p.rapidapi.com",
     },
   };
