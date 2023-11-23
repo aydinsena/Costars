@@ -1,4 +1,7 @@
 <h1 class="lead">Login Page</h1>
+    {{#if errorMessage}}
+      <p style="font-size:16px" class="alert alert-warning" role="alert" style="background-color:#beb9db !important ">{{errorMessage}}</p>
+    {{/if}}
 <div class="form-container">
   <form action="/auth/login" method="POST" class="edit-form">
     <div class="mb-3">
@@ -20,8 +23,6 @@
       />
     </div>
     <button type="submit" class="btn btn-submit" style="color: white !important;">Login</button>
-    {{#if errorMessage}}
-      <p class="error">{{errorMessage}}</p>
-    {{/if}}
+
   </form>
 </div>
