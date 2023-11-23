@@ -87,18 +87,6 @@ router.get("/wallet", isLoggedIn, async (req, res, next) => {
   totalWorth = currentPrices.reduce((sum, value, index) => {
     return sum + value * amountsHeld[index];
   }, 0);
-  if (!valuesArray || valuesArray.length === 0) {
-    return res.render("user/wallet", {
-      message: "You haven't added any value",
-      userInfo: req.session.currentUser,
-      data: apiCall.data,
-      walletInfo: findUser.walletentity.walletvalues,
-      walletTotal: findUser.walletentity.total,
-      apiCurrentValue: currentPrices,
-      totalWorth,
-    });
-  }
-
   res.render("user/wallet", {
     userInfo: req.session.currentUser,
     data: apiCall.data,
