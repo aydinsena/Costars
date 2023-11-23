@@ -31,17 +31,14 @@ router.get("/dashboard", isLoggedIn, async (req, res, next) => {
     totalWorth = currentPrices.reduce((sum, value, index) => {
       return sum + value * amountsHeld[index];
     }, 0);
-
-    console.log(userWithWallet.walletentity.total);
-    console.log(totalWorth);
-    console.log(currentPrices);
+    totalWorth = totalWorth.toFixed(3);
 
     res.render("user/dashboard", {
       fetchedCoins: userFavCoinData,
       userInfo: req.session.currentUser,
       walletInfo: userWithWallet.walletentity.walletvalues,
       walletTotal: userWithWallet.walletentity.total,
-      apiCurrentValue: currentPrices, //apiden gelen total
+      apiCurrentValue: currentPrices, //total comes from api
       totalWorth,
     });
   } catch (err) {
@@ -100,6 +97,18 @@ router.get("/wallet", isLoggedIn, async (req, res, next) => {
   totalWorth = currentPrices.reduce((sum, value, index) => {
     return sum + value * amountsHeld[index];
   }, 0);
+  totalWorth = totalWorth.toFixed(3);
+  if (!valuesArray || valuesArray.length === 0) {
+    return res.render("user/wallet", {
+      userInfo: req.session.currentUser,
+      data: apiCall.data,
+      walletInfo: findUser.walletentity.walletvalues,
+      walletTotal: findUser.walletentity.total,
+      apiCurrentValue: currentPrices,
+      totalWorth,
+      message: "You haven't added any value to your wallet",
+    });
+  }
   res.render("user/wallet", {
     userInfo: req.session.currentUser,
     data: apiCall.data,
@@ -189,7 +198,10 @@ router.post("/wallet-delete", isLoggedIn, async (req, res, next) => {
 
 router.get("/coins", isLoggedIn, (req, res, next) => {
   axios.get("https://api.coinlore.net/api/tickers/").then((response) => {
-    res.render("user/coins", { coinData: response.data.data });
+    res.render("user/coins", {
+      coinData: response.data.data,
+      userInfo: req.session.currentUser,
+    });
   });
 });
 
