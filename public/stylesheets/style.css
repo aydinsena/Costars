@@ -40,6 +40,12 @@ h1 {
 .btn-success {
   background-color: #8bd3c7 !important;
 }
+
+.btn-submit {
+  background-color: #bd7ebe !important;
+  margin-bottom: 10px;
+}
+
 .card {
   height: 100%;
 }
