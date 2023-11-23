@@ -14,7 +14,6 @@ const walletSchema = new Schema(
     total: Number,
   },
   {
-    // this second object adds extra properties: `createdAt` and `updatedAt`
     timestamps: true,
   }
 );

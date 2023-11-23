@@ -57,7 +57,6 @@ router.post("/dashboard", isLoggedIn, async (req, res, next) => {
     const userId = req.session.currentUser._id;
     const response = await axios.get("https://api.coinlore.net/api/tickers/");
     const getUserFavs = await User.findById(userId);
-
     const favCoinNames = getUserFavs.favCoins;
     const removeItem = favCoinNames.indexOf(unfavCoin);
     if (removeItem !== -1) {
@@ -80,7 +79,7 @@ router.post("/dashboard", isLoggedIn, async (req, res, next) => {
       message: "Coin removed successfully",
     });
   } catch (err) {
-    console.log("smt went wrong while removing");
+    console.log("Something went wrong while removing the favorite");
   }
 });
 
@@ -91,8 +90,9 @@ router.get("/wallet", isLoggedIn, async (req, res, next) => {
   const currentPrices = [];
   const amountsHeld = [];
   let totalWorth = 0;
+  const valuesArray = findUser.walletentity.walletvalues;
 
-  const bringWalletValues = findUser.walletentity.walletvalues.forEach((e) => {
+  valuesArray.forEach((e) => {
     amountsHeld.push(e.amount);
     const findCoinAPI = apiCall.data.data.find((coin) => coin.name === e.name);
     currentPrices.push(findCoinAPI.price_usd);
@@ -127,15 +127,13 @@ router.post("/wallet", isLoggedIn, async (req, res, next) => {
       currentPrice: findInApi.price_usd,
       sum: sumValue,
     };
+    const valuesArray = findUser.walletentity.walletvalues;
+    valuesArray.push(updatedWalletValue);
 
-    findUser.walletentity.walletvalues.push(updatedWalletValue);
     await findUser.walletentity.save();
-
-    const calculateTotal = await findUser.walletentity.walletvalues.forEach(
-      (e) => {
-        totalValue += parseFloat(e.sum);
-      }
-    );
+    await findUser.walletentity.walletvalues.forEach((e) => {
+      totalValue += parseFloat(e.sum);
+    });
     const changeTotal = await Wallet.findById(findUser.walletentity);
 
     changeTotal.total = totalValue.toFixed(3);
@@ -145,6 +143,47 @@ router.post("/wallet", isLoggedIn, async (req, res, next) => {
   } catch (err) {
     console.log(err);
     return res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/wallet-delete", isLoggedIn, async (req, res, next) => {
+  try {
+    const { coinForm } = req.body;
+    const userId = req.session.currentUser._id;
+    const findUser = await User.findById(userId).populate("walletentity");
+    const walletValues = findUser.walletentity.walletvalues;
+    const findSameCoin = walletValues.find((coin) => coin.name === coinForm);
+    const walletId = findUser.walletentity._id;
+
+    const updatedWallet = await Wallet.findOneAndUpdate(
+      { _id: walletId },
+      {
+        $pull: {
+          walletvalues: {
+            name: findSameCoin.name,
+            amount: findSameCoin.amount,
+            sum: findSameCoin.sum,
+          },
+        },
+      },
+      { new: true }
+    );
+
+    const newTotal = updatedWallet.walletvalues.reduce((sum, coin) => {
+      return sum + parseFloat(coin.sum);
+    }, 0);
+
+    const oldTotal = await Wallet.findById(walletId);
+
+    oldTotal.total = newTotal.toFixed(3);
+    await oldTotal.save();
+
+    res.redirect("/user/wallet");
+  } catch (err) {
+    console.log(err);
+    return res
+      .status(500)
+      .render("user/wallet", { err: "Something went wrong when removing" });
   }
 });
 
